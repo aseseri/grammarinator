@@ -14,51 +14,57 @@ This repository contains a simple demonstration of `grammarinator`, a grammar-ba
 
 -----
 
-## How to Run This Demo
+## The Demo Scenario
 
-```bash
-# Create and activate a Python virtual environment
-python3 -m venv venv
-source venv/bin/activate  # (or .\venv\Scripts\activate on Windows)
+This demo is in two parts to show the two primary jobs of a grammar fuzzer.
 
-# Install the required tools
-pip install -r requirements.txt
+### Part 1: Finding Grammar Mismatches (Syntactic Bugs)
 
-# Run the demo
-./run_demo.sh
-```
+First, we use the fuzzer to find bugs in our grammar specification.
+
+1.  **Run the first demo script:**
+    ```bash
+    # Create and activate a Python virtual environment
+    python3 -m venv venv
+    source venv/bin/activate  # (or .\venv\Scripts\activate on Windows)
+    
+    # Install the required tools
+    pip install -r requirements.txt
+    
+    ./run_demo_syntax.sh
+    ```
+2.  **Observe:** You will see the script find "crashes." Our `calc.py` parser correctly prints **"\!\!\! ERROR (Syntactic): Invalid syntax"** because the grammar (`tiny_calc_syntax.g4`) has a bug: it's generating "invalid" numbers with leading zeros (like `007`). This shows a **mismatch between our specification and our parser.**
 
 -----
 
-## What This Demo Shows
+### Part 2: The In-Class Exercise (Fixing the Grammar)
 
-This demo runs in two stages to show how a fuzzer helps find bugs in both a parser and its grammar specification.
+Now, we fix the grammar bug.
 
-### Part 1: Finding a Grammar Mismatch
-
-The `tiny_calc.g4` file intentionally contains a "bug" in the grammar rule that is too permissive:
-
-```antlr
-// This rule allows numbers with leading zeros, like "007"
-INT: [0-9]+; // Problem
-```
-
-Our `calc.py` parser, however, is stricter and (correctly) rejects numbers with leading zeros.
-
-When you run `./run_demo.sh` for the first time, you will see our `calc.py` parser print **"\!\!\! ERROR (Syntactic): Invalid syntax"** for these inputs. The script will count these as "crashes."
-
-This demonstrates a **mismatch between our grammar (the specification) and our parser (the implementation)**. `grammarinator` helped us find this bug in our *grammar*.
-
-### Part 2: Fixing the Grammar
-
-1.  Open `tiny_calc.g4` in a text editor.
+1.  Open `tiny_calc_syntax.g4` in a text editor.
 2.  Comment out the "Problem" line and uncomment the "Solution" line:
     ```antlr
     // INT: [0-9]+; // Problem
     INT: '0' | [1-9][0-9]*; // Solution
     ```
-3.  Save the file and run `./run_demo.sh` again.
+3.  Save the file and run the script again:
+    ```bash
+    ./run_demo_syntax.sh
+    ```
+4.  **Observe:** All tests now pass, and the script reports **"Total crashes found: 0"**. We have successfully "calibrated" our fuzzer.
 
-You will see that `grammarinator` only generates valid integers (no leading zeros). All 20 test cases will now be parsed successfully, and the script will report **"Total crashes found: 0"**.
+-----
 
-We have now validated our grammar and can proceed with large-scale fuzzing to find *logic* bugs (like division-by-zero, overflows, etc.).
+### Part 3: Finding Logic Bugs (The Real Goal)
+
+Now that we have a correct grammar, we use it to find real logic bugs in our program. The file `tiny_calc_logic.g4` already includes the grammar fix *and* adds support for multiplication and division.
+
+1.  **Run the second demo script:**
+    ```bash
+    ./run_demo_logic.sh
+    ```
+2.  **Observe:** The script will run until it gets "lucky" and generates a test case like `5/0`. You will see a real Python **`ZeroDivisionError`** crash\!
+
+This shows the true purpose of `grammarinator`: finding deep logic bugs by feeding a program millions of syntactically valid but semantically dangerous inputs.
+
+*(Note: You may need to run `run_demo_logic.sh` a few times or increase the `-n 20` test case number to `n -200` to guarantee you hit a division-by-zero crash.)*
