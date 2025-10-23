@@ -4,7 +4,7 @@ This repository contains a simple demonstration of `grammarinator`, a grammar-ba
 
 -   **Tool:** `grammarinator`
 -   **Target Program:** `calc.py` (A simple, vulnerable calculator)
--   **Grammar:** `tiny_calc.g4` (An ANTLR v4 grammar for the calculator)
+-   **Grammar:** `tiny_calc_syntax.g4` and `tiny_calc_logic.g4` (ANTLR v4 grammars for the calculator)
 
 ## Key Concepts
 
