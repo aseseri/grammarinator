@@ -1,0 +1,8 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Grammarinator generated files
+tiny_calcGenerator.py
+test_cases/
