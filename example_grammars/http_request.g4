@@ -1,0 +1,10 @@
+grammar HttpRequest;
+start: METHOD PATH HEADER_LINE* BODY?;
+METHOD: 'GET' | 'POST' | 'PUT' | 'DELETE';
+PATH: '/' (IDENTIFIER | NUMBER) ('/' (IDENTIFIER | NUMBER))*;
+HEADER_LINE: IDENTIFIER ':' VALUE;
+BODY: STRING;
+IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
+NUMBER: [0-9]+;
+STRING: '"' (~'"')* '"';
+VALUE: (~'\n')*;
