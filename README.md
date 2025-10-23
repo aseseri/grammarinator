@@ -8,7 +8,7 @@ This repository contains a simple demonstration of `grammarinator`, a grammar-ba
 
 ## Key Concepts
 
-* **Fuzzer Type:** This is a **black-box** fuzzer. It has no knowledge of the target's internal code or logic (no CFG, no code coverage).
+* **Fuzzer Type:** This is a **black-box** fuzzer. It has no knowledge of the target's internal code or logic (no control flow graphs, no code coverage).
 * **Generation Type:** This is a **generation-based** fuzzer. It generates new inputs "from scratch" based on a set of rules (the grammar). It does not mutate existing seeds.
 * **"Under the Hood":** `grammarinator` works by building a random **Abstract Syntax Tree (AST)** in memory based on the grammar rules, and then "un-parsing" that tree back into a string to create the test case.
 
