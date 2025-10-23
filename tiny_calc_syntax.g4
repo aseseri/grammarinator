@@ -2,7 +2,7 @@
 // we feed to grammarinator. It defines the "language"
 // of our tiny calculator.
 
-grammar tiny_calc;
+grammar tiny_calc_syntax;
 
 // 'start' is the entry point. A valid program is
 // one expression ('expr') followed by the End-of-File marker.

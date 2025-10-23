@@ -5,34 +5,34 @@
 # Stop the script if any command fails
 set -e
 
-echo "--- 1. Processing the grammar (tiny_calc_multdiv.g4) ---"
+echo "--- 1. Processing the grammar (tiny_calc_syntax.g4) ---"
 echo "This reads the .g4 file and generates the Python fuzzer."
-grammarinator-process tiny_calc_multdiv.g4
+grammarinator-process tiny_calc_syntax.g4
 echo "✅ Fuzzer generated!"
 echo
 
 echo "--- 2. Generating 20 test cases ---"
 echo "This runs the generated fuzzer to create test inputs."
 # Ensure the output directory exists
-mkdir -p test_cases_multdiv
+mkdir -p test_cases_syntax
 
-# 1. We must use a full output pattern for '-o', like 'test_cases/test_%d.txt'.
-#    Using just a directory 'test_cases/' is ambiguous.
+# 1. We must use a full output pattern for '-o', like 'test_cases_syntax/test_%d.txt'.
+#    Using just a directory 'test_cases_synatx/' is ambiguous.
 #
 # 2. We must add '--sys-path .' so Python can find the module.
 #
 # 3. The final 'NAME' argument MUST be in the format 'ModuleName.ClassName'.
-#    In our case, that is 'tiny_calcGenerator.tiny_calcGenerator'.
+#    In our case, that is 'tiny_calc_syntaxGenerator.tiny_calc_syntaxGenerator'.
 #
 grammarinator-generate \
     --sys-path . \
     -n 20 \
     -d 8 \
-    -o test_cases_multdiv/test_%d.txt \
-    tiny_calc_multdivGenerator.tiny_calc_multdivGenerator
+    -o test_cases_syntax/test_%d.txt \
+    tiny_calc_syntaxGenerator.tiny_calc_syntaxGenerator
 # ----------------------------------
 
-echo "✅ 20 test cases created in 'test_cases/'"
+echo "✅ 20 test cases created in 'test_cases_syntax/'"
 echo
 
 echo "--- 3. Running the 'calc.py' target against all test cases ---"
@@ -41,7 +41,7 @@ crash_count=0
 test_count=0
 
 # Loop through all generated .txt files in the directory
-for testfile in test_cases_multdiv/test_*.txt; do
+for testfile in test_cases_syntax/test_*.txt; do
     
     # Check if the file exists before running
     if [ -f "$testfile" ]; then

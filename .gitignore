@@ -4,7 +4,7 @@ __pycache__/
 venv/
 
 # Grammarinator generated files
-tiny_calcGenerator.py
-tiny_calc_multdivGenerator.py
-test_cases/
-test_cases_multdiv/
+tiny_calc_syntaxGenerator.py
+tiny_calc_logicGenerator.py
+test_cases_syntax/
+test_cases_logic/

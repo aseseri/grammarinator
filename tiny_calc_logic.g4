@@ -2,7 +2,7 @@
 // we feed to grammarinator. It defines the "language"
 // of our tiny calculator.
 
-grammar tiny_calc_multdiv;
+grammar tiny_calc_logic;
 
 // 'start' is the entry point. A valid program is
 // one expression ('expr') followed by the End-of-File marker.
@@ -18,9 +18,7 @@ m_expr: atom (('*' | '/') atom)*;
 atom: INT;
 
 // Define what an Integer ('INT') looks like:
-// (Use the "Solution" version)
-// INT: [0-9]+; // Problem
-INT: '0' | [1-9][0-9]*; // Solution
+INT: '0' | [1-9][0-9]*;
 
 // Define Whitespace ('WS') and tell the parser to 'skip' it.
 WS: [ \t\r\n]+ -> skip;
